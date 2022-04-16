@@ -2,24 +2,24 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Lovatto.SceneLoader
+namespace MoreMountains.Tools
 {
-
-	[CustomPropertyDrawer(typeof(ReorderableAttribute))]
+	[CustomPropertyDrawer(typeof(MMReorderableAttributeAttribute))]
 	public class ReorderableDrawer : PropertyDrawer {
 
 		private static Dictionary<int, ReorderableList> lists = new Dictionary<int, ReorderableList>();
 
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
 
-			ReorderableList list = GetList(property, attribute as ReorderableAttribute);
+			ReorderableList list = GetList(property, attribute as MMReorderableAttributeAttribute);
 
 			return list != null ? list.GetHeight() : EditorGUIUtility.singleLineHeight;
 		}		
-
+		
+		#if  UNITY_EDITOR
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
 
-			ReorderableList list = GetList(property, attribute as ReorderableAttribute);
+			ReorderableList list = GetList(property, attribute as MMReorderableAttributeAttribute);
 
 			if (list != null) {
 
@@ -30,6 +30,7 @@ namespace Lovatto.SceneLoader
 				GUI.Label(position, "Array must extend from ReorderableArray", EditorStyles.label);
 			}
 		}
+		#endif
 
 		public static int GetListId(SerializedProperty property) {
 
@@ -49,7 +50,7 @@ namespace Lovatto.SceneLoader
 			return GetList(property, null, GetListId(property));
 		}
 
-		public static ReorderableList GetList(SerializedProperty property, ReorderableAttribute attrib) {
+		public static ReorderableList GetList(SerializedProperty property, MMReorderableAttributeAttribute attrib) {
 
 			return GetList(property, attrib, GetListId(property));
 		}
@@ -59,7 +60,7 @@ namespace Lovatto.SceneLoader
 			return GetList(property, null, id);
 		}
 
-		public static ReorderableList GetList(SerializedProperty property, ReorderableAttribute attrib, int id) {
+		public static ReorderableList GetList(SerializedProperty property, MMReorderableAttributeAttribute attrib, int id) {
 
 			if (property == null) {
 
@@ -80,8 +81,6 @@ namespace Lovatto.SceneLoader
 						ReorderableList.ElementDisplayType displayType = attrib.singleLine ? ReorderableList.ElementDisplayType.SingleLine : ReorderableList.ElementDisplayType.Auto;
 
 						list = new ReorderableList(array, attrib.add, attrib.remove, attrib.draggable, displayType, attrib.elementNameProperty, attrib.elementNameOverride, icon);
-						list.paginate = attrib.paginate;
-						list.pageSize = attrib.pageSize;
 					}
 					else {
 

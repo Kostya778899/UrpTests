@@ -7,10 +7,10 @@ namespace Lovatto.SceneLoader
     {
 
         [Header("Scene Manager")]
-        [Reorderable(elementNameProperty = "myString")]
+        //[Reorderable(elementNameProperty = "myString")]
         public TheSceneList List;
 
-        [Header("Tips"), Reorderable("Tips")]
+        //[Header("Tips"), Reorderable("Tips")]
         public TheTipList TipList;
 
         public bl_SceneLoaderInfo GetSceneInfo(string scene)
